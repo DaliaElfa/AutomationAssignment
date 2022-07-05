@@ -9,6 +9,7 @@ import org.testng.annotations.AfterTest;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 import pages.*;
+import testdata.LoadProperties;
 
 import java.util.concurrent.TimeUnit;
 
@@ -17,7 +18,22 @@ public class FullScenarioTest {
     HomePage HomePageObj;
     SignInPage SignInPageObj;
     RegistrationPage RegisterPageObj;
-
+    BlousesPage BlousesPageObj;
+    AddToCartPage AddToCartObj;
+    ShoppingCartPage ShoppingCartObj;
+    PaymentPage PaymentObj;
+    OrderHistoryPage OrderHistoryObj;
+    String Email = LoadProperties.UserData.getProperty("Email");
+    String Gender = LoadProperties.UserData.getProperty("Gender");
+    String Fname = LoadProperties.UserData.getProperty("FirstName");
+    String Lname = LoadProperties.UserData.getProperty("LastName");
+    String PWord = LoadProperties.UserData.getProperty("Password");
+    String Address = LoadProperties.UserData.getProperty("Address");
+    String City = LoadProperties.UserData.getProperty("City");
+    String State = LoadProperties.UserData.getProperty("State");
+    String Postalcode = LoadProperties.UserData.getProperty("Postalcode");
+    String Mobile = LoadProperties.UserData.getProperty("Mobile");
+    String Alias = LoadProperties.UserData.getProperty("Alias");
     @BeforeTest
     public void BeforeClass() {
         WebDriverManager.chromedriver().setup();
@@ -32,11 +48,11 @@ public class FullScenarioTest {
         HomePageObj = new HomePage(driver);
         HomePageObj.SignIn_Click();
         SignInPageObj = new SignInPage(driver);
-        SignInPageObj.CreatenewaccountEmail_set("toto@yahoo.com");
+        SignInPageObj.CreatenewaccountEmail_set(Email);
         SignInPageObj.Createanaccount_Click();
         RegisterPageObj = new RegistrationPage(driver);
-        RegisterPageObj.CreateAccount("Mr", "mohamed", "Mahmoud", "797979797", "haram", "giza", "Florida", "87654","018873663362","iuuouo");
-        boolean logout = driver.findElement(By.className("logout")).isDisplayed();
+        RegisterPageObj.CreateAccount(Gender,Fname,Lname,PWord,Address,City,State,Postalcode,Mobile,Alias);
+        boolean logout = HomePageObj.signout_IsDisplayed();
         Assert.assertEquals(logout,true);
     }
 
@@ -46,32 +62,32 @@ public class FullScenarioTest {
         HomePageObj.signout_Click();
         HomePageObj.SignIn_Click();
         SignInPageObj = new SignInPage(driver);
-        SignInPageObj.Login_Mail_set("toto@yahoo.com");
-        SignInPageObj.Login_Password_set("797979797");
+        SignInPageObj.Login_Mail_set(Email);
+        SignInPageObj.Login_Password_set(PWord);
         SignInPageObj.SubmitLogin_Click();
-        boolean logout = driver.findElement(By.className("logout")).isDisplayed();
+        boolean logout = HomePageObj.signout_IsDisplayed();
         Assert.assertEquals(logout,true);
     }
     @Test(priority = 3)
     public void SelectBlouseCategory(){
-        HomePage HomePageObj = new HomePage(driver);
+        HomePageObj = new HomePage(driver);
         HomePageObj.WomenCategory_Click();
         HomePageObj.Blouses_Click();
-        BlousesPage BlousesPageObj = new BlousesPage(driver);
+        BlousesPageObj = new BlousesPage(driver);
         boolean blouses_displayed = BlousesPageObj.CheckCategoryNameIsBlouses();
         Assert.assertEquals(blouses_displayed,true);
     }
     @Test(priority = 4)
     public void Selectresultedproduct(){
-        BlousesPage BlousesPageObj = new BlousesPage(driver);
+        BlousesPageObj = new BlousesPage(driver);
         BlousesPageObj.SelectBlouseitem();
     }
     @Test(priority = 5)
     public void FollowCheckoutProcedure() {
-        AddToCartPage AddToCartObj = new AddToCartPage(driver);
+        AddToCartObj = new AddToCartPage(driver);
         AddToCartObj.AddToCart_Click();
         AddToCartObj.ProceedToCheckOut_Click();
-        ShoppingCartPage ShoppingCartObj = new ShoppingCartPage(driver);
+        ShoppingCartObj = new ShoppingCartPage(driver);
         ShoppingCartObj.ProceedToCheckOut_summary_Click();
         ShoppingCartObj.ProceedToCheckOut_Address_Click();
         ShoppingCartObj.TermsOfService_Check();
@@ -79,20 +95,19 @@ public class FullScenarioTest {
     }
     @Test(priority = 6)
     public void Confirmorderbyselectingbankwireoption() {
-        PaymentPage PaymentObj = new PaymentPage(driver);
+        PaymentObj = new PaymentPage(driver);
         PaymentObj.PayByBankWire_Click();
         PaymentObj.ConfirmMyOrder_Click();
     }
     @Test(priority = 7)
     public void Validateorderwasplacedfromorderhistorypage() {
-        PaymentPage PaymentObj = new PaymentPage(driver);
+        PaymentObj = new PaymentPage(driver);
         String ReferenceId = PaymentObj.GetOrderreferenceId();
         HomePageObj.MyOrders_Click();
-        OrderHistoryPage OrderHistoryObj = new OrderHistoryPage(driver);
+         OrderHistoryObj = new OrderHistoryPage(driver);
         boolean flag = OrderHistoryObj.IsOrderPlaceInHistory(ReferenceId);
         Assert.assertEquals(flag,true);
     }
-
 
     @AfterTest
     public void AfterTest(){

@@ -15,6 +15,8 @@ import pages.HomePage;
 import pages.RegistrationPage;
 import pages.SignInPage;
 import base.PageBase;
+import testdata.LoadProperties;
+
 import java.util.concurrent.TimeUnit;
 
 import static java.lang.Thread.sleep;
@@ -25,7 +27,17 @@ public class CreateNewAccountTest {
     HomePage HomePageObj;
      SignInPage SignInPageObj;
     RegistrationPage RegisterPageObj;
-
+    String Email = LoadProperties.UserData.getProperty("Email");
+    String Gender = LoadProperties.UserData.getProperty("Gender");
+    String Fname = LoadProperties.UserData.getProperty("FirstName");
+    String Lname = LoadProperties.UserData.getProperty("LastName");
+    String PWord = LoadProperties.UserData.getProperty("Password");
+    String Address = LoadProperties.UserData.getProperty("Address");
+    String City = LoadProperties.UserData.getProperty("City");
+    String State = LoadProperties.UserData.getProperty("State");
+    String Postalcode = LoadProperties.UserData.getProperty("Postalcode");
+    String Mobile = LoadProperties.UserData.getProperty("Mobile");
+    String Alias = LoadProperties.UserData.getProperty("Alias");
     @BeforeTest
     public void BeforeClass() {
         WebDriverManager.chromedriver().setup();
@@ -40,11 +52,11 @@ public class CreateNewAccountTest {
         HomePageObj = new HomePage(driver);
         HomePageObj.SignIn_Click();
         SignInPageObj = new SignInPage(driver);
-        SignInPageObj.CreatenewaccountEmail_set("lolo@yahoo.com");
+        SignInPageObj.CreatenewaccountEmail_set(Email);
         SignInPageObj.Createanaccount_Click();
         RegisterPageObj = new RegistrationPage(driver);
-        RegisterPageObj.CreateAccount("Mr", "mohamed", "Mahmoud", "797979797", "haram", "giza", "Florida", "87654","018873663362","iuuouo");
-        boolean logout = driver.findElement(By.className("logout")).isDisplayed();
+        RegisterPageObj.CreateAccount(Gender, Fname, Lname, PWord, Address, City, State, Postalcode, Mobile,Alias);
+        boolean logout = HomePageObj.signout_IsDisplayed();
         Assert.assertEquals(logout,true);
     }
 
@@ -54,10 +66,10 @@ public class CreateNewAccountTest {
         HomePageObj.signout_Click();
         HomePageObj.SignIn_Click();
         SignInPageObj = new SignInPage(driver);
-        SignInPageObj.Login_Mail_set("lolo@yahoo.com");
-        SignInPageObj.Login_Password_set("797979797");
+        SignInPageObj.Login_Mail_set(Email);
+        SignInPageObj.Login_Password_set(PWord);
         SignInPageObj.SubmitLogin_Click();
-        boolean logout = driver.findElement(By.className("logout")).isDisplayed();
+        boolean logout = HomePageObj.signout_IsDisplayed();
         Assert.assertEquals(logout,true);
     }
 
