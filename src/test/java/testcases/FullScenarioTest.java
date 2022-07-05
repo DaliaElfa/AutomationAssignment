@@ -81,6 +81,9 @@ public class FullScenarioTest {
     public void Selectresultedproduct(){
         BlousesPageObj = new BlousesPage(driver);
         BlousesPageObj.SelectBlouseitem();
+        AddToCartObj = new AddToCartPage(driver);
+        boolean AddToCart_Displayed = AddToCartObj.AddToCart_IsDisplayed();
+        Assert.assertEquals(AddToCart_Displayed,true);
     }
     @Test(priority = 5)
     public void FollowCheckoutProcedure() {
@@ -92,12 +95,17 @@ public class FullScenarioTest {
         ShoppingCartObj.ProceedToCheckOut_Address_Click();
         ShoppingCartObj.TermsOfService_Check();
         ShoppingCartObj.ProceedToCheckOut_Carrier_Click();
+        PaymentObj = new PaymentPage(driver);
+        boolean Payment_displayed = PaymentObj.PayByBankWire_IsDisplayed();
+        Assert.assertEquals(Payment_displayed,true);
     }
     @Test(priority = 6)
     public void Confirmorderbyselectingbankwireoption() {
         PaymentObj = new PaymentPage(driver);
         PaymentObj.PayByBankWire_Click();
         PaymentObj.ConfirmMyOrder_Click();
+        boolean OrderConfirmed =  PaymentObj.OrderConfirmation_IsDisplayed();
+        Assert.assertEquals(OrderConfirmed,true);
     }
     @Test(priority = 7)
     public void Validateorderwasplacedfromorderhistorypage() {
@@ -105,8 +113,8 @@ public class FullScenarioTest {
         String ReferenceId = PaymentObj.GetOrderreferenceId();
         HomePageObj.MyOrders_Click();
          OrderHistoryObj = new OrderHistoryPage(driver);
-        boolean flag = OrderHistoryObj.IsOrderPlaceInHistory(ReferenceId);
-        Assert.assertEquals(flag,true);
+        boolean OrderPlaced = OrderHistoryObj.IsOrderPlaceInHistory(ReferenceId);
+        Assert.assertEquals(OrderPlaced,true);
     }
 
     @AfterTest
