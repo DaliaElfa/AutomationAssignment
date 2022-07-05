@@ -28,7 +28,6 @@ public class PaymentPage {
 
     public String GetOrderreferenceId(){
         String msg = driver.findElement(OrderDetailsMsg).getText();
-        System.out.println(msg);
         String [] words = msg. split(" ");
         int x =0;
         String referenceid = null;

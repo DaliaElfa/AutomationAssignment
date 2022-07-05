@@ -36,8 +36,6 @@ public void WomenCategory_Click() {
         sleep(1000);
         Actions action = new Actions(driver);
         action.moveToElement(driver.findElement(WomenCategory_lst)).perform();
-
-
     }
     public void Blouses_Click() {
         driver.findElement(Blouses_btn).click();

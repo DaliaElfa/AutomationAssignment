@@ -7,6 +7,7 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
+import org.testng.annotations.AfterTest;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 import org.testng.asserts.Assertion;
@@ -34,16 +35,34 @@ public class CreateNewAccountTest {
         //driver.manage().window().
     }
 
-    @Test
+    @Test(priority = 1)
     public void CreateNewAccount()  {
         HomePageObj = new HomePage(driver);
         HomePageObj.SignIn_Click();
         SignInPageObj = new SignInPage(driver);
-        SignInPageObj.CreatenewaccountEmail_set("hkjhkj@yahoo.com");
+        SignInPageObj.CreatenewaccountEmail_set("lolo@yahoo.com");
         SignInPageObj.Createanaccount_Click();
         RegisterPageObj = new RegistrationPage(driver);
         RegisterPageObj.CreateAccount("Mr", "mohamed", "Mahmoud", "797979797", "haram", "giza", "Florida", "87654","018873663362","iuuouo");
         boolean logout = driver.findElement(By.className("logout")).isDisplayed();
         Assert.assertEquals(logout,true);
+    }
+
+    @Test(priority = 2)
+    public void AuthenticateNewUser(){
+        HomePageObj = new HomePage(driver);
+        HomePageObj.signout_Click();
+        HomePageObj.SignIn_Click();
+        SignInPageObj = new SignInPage(driver);
+        SignInPageObj.Login_Mail_set("lolo@yahoo.com");
+        SignInPageObj.Login_Password_set("797979797");
+        SignInPageObj.SubmitLogin_Click();
+        boolean logout = driver.findElement(By.className("logout")).isDisplayed();
+        Assert.assertEquals(logout,true);
+    }
+
+    @AfterTest
+    public void AfterTest(){
+        driver.close();
     }
 }
