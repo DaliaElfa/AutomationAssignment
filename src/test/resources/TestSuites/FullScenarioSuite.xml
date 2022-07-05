@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite name="All Test Suite">
+    <test verbose="2" preserve-order="true"
+          name="C:/Users/dmokhtarelfa/IdeaProjects/Assignment_Dalia/src/test/java/testcases/FullScenarioTest.java">
+        <classes>
+            <class name="testcases.FullScenarioTest">
+                <methods>
+                    <include name="CreateNewAccount"/>
+                    <include name="AuthenticateNewUser"/>
+                    <include name="SelectBlouseCategory"/>
+                    <include name="Selectresultedproduct"/>
+                    <include name="FollowCheckoutProcedure"/>
+                    <include name="Confirmorderbyselectingbankwireoption"/>
+                    <include name="Validateorderwasplacedfromorderhistorypage"/>
+                </methods>
+            </class>
+        </classes>
+    </test>
+</suite>
